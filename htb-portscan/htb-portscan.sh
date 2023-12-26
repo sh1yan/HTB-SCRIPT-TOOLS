@@ -25,14 +25,10 @@ if [ "$protocol" == "tcp" ]; then
   echo ""
   sudo nmap -min-rate 10000 -p- "$ip_address" -oG "$ip_address"-tcp-braker-allports
   nmap_port_result=$(grep -oE '([0-9]+)/open' "$ip_address"-tcp-braker-allports | awk -F/ '{print $1}' | tr '\n' ',')
-  echo "* 正在对开放的端口进行TCP全连接式版本探测和系统版本探测..."
-  echo "sudo nmap -sT -sV -O -p\"$nmap_port_result\" \"$ip_address\""
+  echo "* 正在对开放的端口进行TCP全连接式版本探测和系统版本以及漏洞探测..."
+  echo "sudo nmap -sT -sV -sC -O -p\"$nmap_port_result\" \"$ip_address\""
   echo ""
-  sudo nmap -sT -sV -O -p"$nmap_port_result" "$ip_address"
-  echo "* 正在对开放的端口进行nmap漏洞脚本脚本扫描..."
-  echo "sudo nmap --script=vuln -p\"$nmap_port_result\" \"$ip_address\""
-  echo ""
-  sudo nmap --script=vuln -p"$nmap_port_result" "$ip_address"
+  sudo nmap -sT -sV -sC -O -p"$nmap_port_result" "$ip_address"
 
 elif [ "$protocol" == "udp" ]; then
   echo "* 正在执行udp协议的端口扫描探测..."
@@ -41,12 +37,8 @@ elif [ "$protocol" == "udp" ]; then
   sudo nmap -min-rate 10000 -p- -sU "$ip_address" -oG "$ip_address"-udp-braker-allports
   nmap_port_result=$(grep -oE '([0-9]+)/open' "$ip_address"-udp-braker-allports | awk -F/ '{print $1}' | tr '\n' ',')
   echo "* 正在对开放的端口进行udp式版本探测和系统版本探测..."
-  echo "sudo nmap -sV -sU -O -p\"$nmap_port_result\" \"$ip_address\""
+  echo "sudo nmap -sV -sU -sC -O -p\"$nmap_port_result\" \"$ip_address\""
   echo ""
-  sudo nmap -sV -sU -O -p"$nmap_port_result" "$ip_address"
-  echo "* 正在对开放的端口进行nmap漏洞脚本脚本扫描..."
-  echo "sudo nmap --script=vuln -sU -p\"$nmap_port_result\" \"$ip_address\""
-  echo ""
-  sudo nmap --script=vuln -sU -p"$nmap_port_result" "$ip_address"
+  sudo nmap -sV -sU -sC -O -p"$nmap_port_result" "$ip_address"
 
 fi
